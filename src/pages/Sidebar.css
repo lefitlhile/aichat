@@ -1,0 +1,79 @@
+/* src/components/Sidebar.css */
+
+.sidebar {
+  width: 250px;
+  background-color: #e2e2e8;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed; /* Fix the sidebar to the left */
+  height: 100vh;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logo-img {
+  width: 20px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.logo-text {
+  font-size: 1.2rem;
+  color: #1c1b1c;
+  font-weight: bold;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.sidebar-menu li {
+  margin: 15px 0;
+}
+
+.sidebar-menu li a {
+  color: rgb(18, 17, 17);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  padding: 10px; /* Add padding for better clickable area */
+  transition: background-color 0.3s ease;
+  border-radius: 5px;
+}
+
+.sidebar-menu li a:hover {
+  background-color: #b9bdc0; /* Slightly lighter background on hover */
+}
+
+.sidebar-menu li a svg {
+  margin-right: 10px; /* Space between icon and text */
+  font-size: 20px;
+  transition: color 0.3s ease;
+}
+
+.sidebar-menu li a:hover svg {
+  color: #191819; /* Change icon color on hover */
+}
+
+.sidebar-footer {
+  margin-top: auto; /* Push the footer to the bottom */
+  padding-top: 20px;
+  border-top: 1px solid #444;
+  width: 100%;
+  text-align: center;
+}
+
+.sidebar-footer p {
+  font-size: 14px;
+  color: #aaa;
+}

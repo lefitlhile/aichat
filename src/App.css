@@ -1,0 +1,12 @@
+
+/* src/App.css */
+
+.App {
+  display: flex;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 250px; /* To accommodate the sidebar width */
+  padding: 20px;
+}

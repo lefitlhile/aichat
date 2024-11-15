@@ -1,0 +1,345 @@
+.home-container {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+}
+
+.home-screen {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0.1px;
+}
+p { margin: 1px 0; }
+
+h3, p { margin: 0.1x 0; 
+text-align: left;
+
+}
+.left-align { text-align: left; }
+
+.search-history-box {
+  width: 60%; /* Adjust width as needed */
+  max-width: 600px;
+  min-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 100px; /* Space for the input at the bottom */
+}
+
+.no-questions {
+  font-weight: bold;
+  
+  
+}
+
+.user-question, .ai-response {
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.user-question {
+  background-color: #d1e7dd;
+  text-align: left;
+}
+
+.ai-response {
+  background-color: #e7eaf6;
+  text-align: left;
+}
+
+.chatbox-image-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.chatbox-img {
+  width: 100px;
+  height:100px;
+  opacity: 0.3;
+}
+
+/* Input container fixed at the bottom with icon inside the input box */
+.input-container {
+  position: fixed;
+  bottom: 0;
+  left: 290px; /* Aligns with sidebar width */
+  width: 80%;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px 40px 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  white-space: nowrap; /* Prevents wrapping */
+  overflow: hidden; /* Hides any overflowing text */
+  text-overflow: ellipsis; /* Adds "..." to indicate overflow */
+}
+
+.icon-container {
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.send-icon {
+  color: #555;
+  font-size: 20px;
+}
+.chat-entry {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.chat-avatar {
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-avatar, .ai-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.ai-avatar {
+  background-color: #f0f0f0;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  color: #333;
+}
+
+.user-question, .ai-response {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.user-question {
+  background-color: #e0f7fa;
+  align-self: flex-end;
+}
+
+.ai-response {
+  background-color: #f1f1f1;
+  align-self: flex-start;
+}
+
+.search-history-box {
+  position: relative;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+.clear-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ccc;
+  color: #131313;
+  border: none;
+  padding: 10px 20px; /* Slightly more padding for a better appearance */
+  border-radius: 25px; /* Increased border-radius for a more curvy effect */
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.clear-button:hover {
+  background-color: #aaa;
+}
+
+
+.chat-entry {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.chat-avatar {
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-avatar, .ai-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.ai-avatar {
+  background-color: #f0f0f0;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  color: #333;
+}
+
+.user-question, .ai-response {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.user-question {
+  background-color: #e0f7fa;
+  align-self: flex-end;
+}
+
+.ai-response {
+  background-color: #f1f1f1;
+  align-self: flex-start;
+}
+/* Highlight selected history entry */
+.chat-entry.selected {
+  background-color: #e7cee1; /* Light green background */
+  border-radius: 6px; /* Reduced border-radius for a more compact look */
+  padding: 4px 4px; /* Reduced padding to make the highlight smaller */
+  margin: 5px 0; /* Reduced margin between entries */
+}
+
+.chat-entry:hover {
+  cursor: pointer; /* Show a pointer cursor when hovering over history entries */
+}
+
+/* Style for the clear button */
+.clear-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ccc;
+  color: #131313;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.clear-button:hover {
+  background-color: #aaa;
+}
+/* Chatbox Image Container */
+.chatbox-image-container {
+  text-align: center;
+  margin-bottom: 15px; /* Spacing between image and content */
+}
+
+.chatbox-img {
+  width: 100px;
+  opacity: 0.8;
+  object-fit: contain;
+}
+/* Login Icon in Top-Right Corner */
+.login-icon-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1000; /* Ensure it's on top of other elements */
+}
+
+.login-icon {
+  width: 40px; /* Adjust size as needed */
+  height: 40px;
+  cursor: pointer; /* Change cursor to indicate it's clickable */
+  opacity: 0.8; /* Optional, can adjust opacity */
+}
+
+.login-icon:hover {
+  opacity: 1; /* Optional: Increase opacity on hover */
+}
+.suggestions-box {
+  border: 1px solid #ddd;
+  border-top: none;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  position: absolute;
+  width: 100%;
+  z-index: 100;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-item {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background-color: #f1f1f1;
+}
+
+.selected {
+  background-color: #f0f0f0;
+  border-left: 4px solid #007bff; /* Highlight selected entry */
+}
+
+.chat-entry {
+  cursor: pointer;
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+}
+
+.chat-avatar {
+  margin-right: 10px;
+}
+
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.ai-avatar {
+  padding: 5px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+  font-size: 14px;
+}
+/* In Home.css */
+.login-icon-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 10; /* Ensures the login icon stays on top */
+}
+
+.login-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
