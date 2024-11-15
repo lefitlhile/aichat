@@ -1,0 +1,137 @@
+
+/* ChatContent.css */
+.chat-page {
+  display: flex;
+  min-height: 100vh;
+  position: relative; /* Ensure the right-aligned element is positioned relative to this container */
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #f4f4f4;
+  padding: 20px;
+  position: fixed;
+  height: 100vh;
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 40px;
+  margin-left: 250px;
+  background-color: #f9f9f9;
+}
+
+.chat-box {
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.chat-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.chat-body {
+  margin-top: 20px;
+}
+
+.chat-entry {
+  display: flex;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.user-question {
+  font-weight: 500;
+}
+
+.ai-response {
+  font-style: italic;
+}
+
+.selected {
+  background-color: #f0f0f0;
+}
+
+.no-history {
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.chat-footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.icon {
+  font-size: 1.2rem;
+}
+
+/* Positioning for the user info in top right corner */
+.user-info {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.user-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  color: rgb(16, 16, 16);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Adds space between the icon and text */
+  transition: background-color 0.3s;
+  border-radius: 20px; /* Curvy buttons */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow effect */
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.correct-button {
+  background-color: #c8c8c8; /* Green for correct */
+}
+
+.correct-button:hover {
+  background-color: #e7e4e7; /* Darker green */
+}
+
+.wrong-button {
+  background-color: #c8c8c8; /* Red for wrong */
+}
+
+.wrong-button:hover {
+  background-color: #c6b1c9; /* Darker red */
+}
+
+.icon {
+  font-size: 1.2rem; /* Adjust icon size */
+}

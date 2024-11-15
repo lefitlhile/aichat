@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaPaperPlane } from 'react-icons/fa';
 import { GoArrowSwitch } from "react-icons/go";
 import { TbCurrencyDollar } from "react-icons/tb";
@@ -8,15 +8,18 @@ import { RiSettingsLine, RiGroupLine } from "react-icons/ri";
 import { CiShare2 } from "react-icons/ci";
 import logo from '../components/img/electric_bolt_42dp_EA33F7.png';
 import chatboxImage from '../components/img/chat-box.png';
-import userIcon from '../components/img/user.png'; 
-import loginIcon from '../components/img/headman.webp'; 
+import userIcon from '../components/img/user.png';
+import loginIcon from '../components/img/headman.webp';
 import './Home.css';
 import './Sidebar.css';
+import './Chat.js';
 
 function Home() {
   const [question, setQuestion] = useState('');
   const [history, setHistory] = useState([]);
-  const [selectedIndex, setSelectedIndex] = useState(null); 
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setQuestion(e.target.value);
   };
@@ -25,6 +28,12 @@ function Home() {
     if (question.trim()) {
       setHistory([...history, { type: 'user', text: question }]);
       setQuestion('');
+
+      // Optionally, simulate AI response here
+      setHistory((prevHistory) => [
+        ...prevHistory,
+        { type: 'ai', text: 'This is a simulated AI response.' }
+      ]);
     }
   };
 
@@ -32,11 +41,9 @@ function Home() {
     setHistory([]);
   };
 
-  // Function to handle selecting a history entry
   const handleSelectHistory = (index) => {
-    setSelectedIndex(index); 
-    // Navigating to a new page
-    window.open('./pages/Chat.js'); //  URL for login page
+    setSelectedIndex(index);
+    navigate('/Chat'); // Navigate to the chat page on selecting history
   };
 
   return (
@@ -65,7 +72,7 @@ function Home() {
         <div className="input-container">
           <input
             type="text"
-            placeholder="Write Coding about new HTML Tags."
+            placeholder="Type your question here and press Enter"
             value={question}
             onChange={handleChange}
             onKeyPress={(e) => {
@@ -82,22 +89,18 @@ function Home() {
         <p className="left-align">Create and complete tasks using boards</p>
 
         <div className="search-history-box">
-          
           {history.length > 0 && (
             <button className="clear-button" onClick={clearHistory}>Clear Chats History</button>
           )}
 
-         
           <h4 className="history-header">Search History</h4>
 
-          
           {history.length === 0 && !question.trim() && (
             <div className="chatbox-image-container">
               <img src={chatboxImage} alt="Chatbox" className="chatbox-img" />
             </div>
           )}
 
-         
           {history.length === 0 ? (
             <div className='home-screen'>
               <p className="no-questions">No Questions added</p>
@@ -111,7 +114,6 @@ function Home() {
                 onClick={() => handleSelectHistory(index)} 
               >
                 <div className="chat-avatar">
-                
                   {entry.type === 'user' ? (
                     <img src={userIcon} alt="User" className="user-avatar" />
                   ) : (
@@ -127,10 +129,8 @@ function Home() {
         </div>
       </div>
 
-      
       {/* Login Icon */}
       <div className="login-icon-container">
-        {/* Wrap the icon with Link to navigate to the login page */}
         <Link to="/Login">
           <img src={loginIcon} alt="Login" className="login-icon" />
         </Link>

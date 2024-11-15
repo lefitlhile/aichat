@@ -1,73 +1,90 @@
 import React, { useState, useEffect } from 'react';
+import './ChatContent.css';
+import Sidebar from '../components/Sidebar'; // Assuming you have a Sidebar component
+import { TiThumbsUp, TiThumbsDown } from 'react-icons/ti'; // Importing thumbs up and thumbs down icons
+import loginIcon from '../components/img/headman.webp';
 
-function Chat() {
-  const [message, setMessage] = useState('');
-  const [chatHistory, setChatHistory] = useState([]);
+const Chat = () => {
+  const [history, setHistory] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
-  // Fetch chat history on component mount
+  // Simulate a chat history (replace this with your actual chat history logic)
   useEffect(() => {
-    const fetchChatHistory = async () => {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/chat/history', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setChatHistory(data);
-      } else {
-        alert('Error fetching chat history');
-      }
-    };
-
-    fetchChatHistory();
+    // Sample static history data (You can fetch this from your server)
+    const initialHistory = [
+      { type: 'user', text: 'How can I use this feature?' },
+      { type: 'ai', text: 'You can use this feature by following these steps...' },
+    ];
+    setHistory(initialHistory);
   }, []);
 
-  const sendMessage = async () => {
-    const token = localStorage.getItem('token');
-    
-    // Send message to backend, which will forward the request to Gemini API
-    const response = await fetch('http://localhost:5000/api/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify({ user_message: message }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      setChatHistory([...chatHistory, { user_message: data.user_message, ai_response: data.ai_response }]);
-      setMessage('');
-    } else {
-      alert('Error sending message');
-    }
+  const handleSelectHistory = (index) => {
+    setSelectedIndex(index);
+    // You could navigate or perform other actions when an item is clicked
   };
 
   return (
-    <div>
-      <h2>AI Chat</h2>
-      <div>
-        {chatHistory.map((chat, index) => (
-          <div key={index}>
-            <div>User: {chat.user_message}</div>
-            <div>AI: {chat.ai_response}</div>
+    <div className="chat-page">
+      {/* Sidebar stays fixed on the left */}
+      <Sidebar />
+
+      {/* Main content will be centered */}
+      <div className="chat-container">
+        <div className="chat-box"> {/* Container box around chat content */}
+          <div className="chat-header">
+            <h3>List out Some UX testing methods</h3>
+            <span>Johnson Doe</span>
           </div>
-        ))}
+
+          <div className="chat-body">
+            {/* Conditional rendering based on chat history */}
+            {history.length === 0 ? (
+              <div className="no-history">
+                <p className="no-questions">No Questions added</p>
+                <p>Type your questions below and get fast answers</p>
+              </div>
+            ) : (
+              history.map((entry, index) => (
+                <div
+                  key={index}
+                  className={`chat-entry ${entry.type} ${selectedIndex === index ? 'selected' : ''}`}
+                  onClick={() => handleSelectHistory(index)}
+                >
+                  <div className="chat-avatar">
+                    {entry.type === 'user' ? (
+                      <div className="user-avatar">User</div>  // Add user avatar here
+                    ) : (
+                      <div className="ai-avatar">AI</div>    // Add AI avatar here
+                    )}
+                  </div>
+                  <p className={entry.type === 'user' ? 'user-question' : 'ai-response'}>
+                    {entry.text}
+                  </p>
+                </div>
+              ))
+            )}
+          </div>
+
+          <div className="chat-footer">
+            <button className="correct-button">
+              <TiThumbsUp className="icon" />
+              Correct answer
+            </button>
+            <button className="wrong-button">
+              <TiThumbsDown className="icon" />
+              Wrong answer
+            </button>
+          </div>
+        </div>
       </div>
-      <input
-        type="text"
-        placeholder="Type your message..."
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-      />
-      <button onClick={sendMessage}>Send</button>
+
+      {/* Johnson Doe with icon in top right corner */}
+      <div className="user-info">
+        <img src={loginIcon} alt="User Icon" className="user-icon" />
+        <span className="user-name">Johnson Doe</span>
+      </div>
     </div>
   );
-}
+};
 
 export default Chat;
