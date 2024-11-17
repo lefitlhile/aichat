@@ -13,27 +13,61 @@ import loginIcon from '../components/img/headman.webp';
 import './Home.css';
 import './Sidebar.css';
 import './Chat.js';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
+const genAI = new GoogleGenerativeAI("AIzaSyAr38FDtRbgc18Qmvhm6jVCRlcNRmvAHQQ"); // Replace with your API key
+
+const cleanMarkdown = (text) => {
+  // Remove markdown syntax like '*' for bold or italic text
+  return text.replace(/\*+/g, '').replace(/_+/g, '');
+};
 
 function Home() {
   const [question, setQuestion] = useState('');
   const [history, setHistory] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setQuestion(e.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (question.trim()) {
       setHistory([...history, { type: 'user', text: question }]);
       setQuestion('');
+      setLoading(true);
 
-      // Optionally, simulate AI response here
-      setHistory((prevHistory) => [
-        ...prevHistory,
-        { type: 'ai', text: 'This is a simulated AI response.' }
-      ]);
+      try {
+        // Initialize the model
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+        // Make the API call
+        const result = await model.generateContent(question);
+        const aiResponse = result.response.text();
+
+        // Update history with AI response
+        setHistory((prevHistory) => [
+          ...prevHistory,
+          { type: 'ai', text: aiResponse },
+        ]);
+      } catch (error) {
+        console.error("Error occurred during API call:", error);
+
+        // Log additional details if available
+        if (error.response) {
+          console.error("API Response Error:", error.response.data);
+        }
+
+        // Update the history with an error message
+        setHistory((prevHistory) => [
+          ...prevHistory,
+          { type: 'ai', text: 'An error occurred. Please try again later.' },
+        ]);
+      } finally {
+        setLoading(false); // Stop loading state
+      }
     }
   };
 
@@ -82,7 +116,11 @@ function Home() {
             }}
           />
           <span className="icon-container" onClick={handleSubmit}>
-            <FaPaperPlane className="send-icon" />
+            {loading ? (
+              <span className="loading-spinner">...</span>
+            ) : (
+              <FaPaperPlane className="send-icon" />
+            )}
           </span>
         </div>
         <h3 className="left-align">Get answers in seconds</h3>
@@ -104,7 +142,7 @@ function Home() {
           {history.length === 0 ? (
             <div className='home-screen'>
               <p className="no-questions">No Questions added</p>
-              <p>Type your questions to below input and get fast answers</p>
+              <p>Type your questions to the input below and get fast answers</p>
             </div>
           ) : (
             history.map((entry, index) => (
@@ -120,9 +158,13 @@ function Home() {
                     <div className="ai-avatar">AI</div>
                   )}
                 </div>
-                <p className={entry.type === 'user' ? 'user-question' : 'ai-response'}>
-                  {entry.text}
-                </p>
+                <div className={entry.type === 'user' ? 'user-question' : 'ai-response'}>
+                {entry.type === 'ai' ? (
+                  <p>{cleanMarkdown(entry.text)}</p> // Cleaned response without markdown
+                ) : (
+                  entry.text
+                )}
+              </div>
               </div>
             ))
           )}

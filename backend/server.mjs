@@ -165,6 +165,15 @@ app.get('/api/chat/history', authMiddleware, (req, res) => {
   );
 });
 
+// In server.mjs
+import cors from 'cors';
+
+app.use(cors({
+  origin: 'http://localhost:3000',  // Allow requests from your React frontend
+  methods: 'GET,POST',
+  allowedHeaders: 'Content-Type,Authorization',  // Allow the Authorization header for JWT
+}));
+
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
