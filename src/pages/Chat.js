@@ -8,38 +8,38 @@ import { useLocation } from 'react-router-dom';
 const Chat = () => {
   const [history, setHistory] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [searchText, setSearchText] = useState(''); // New state for search input
   const location = useLocation();
   const { response } = location.state || {}; 
 
-  
   useEffect(() => {
     setHistory([]); 
   }, []);
 
   const handleSelectHistory = (index) => {
     setSelectedIndex(index);
-    
   };
 
   const cleanMarkdown = (text) => {
-   
     return text.replace(/[*_]+/g, '');
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchText(e.target.value); // Update the search text
   };
 
   return (
     <div className="chat-page">
-     
       <Sidebar />
 
       {/* Main content will be centered */}
       <div className="chat-container">
-        <div className="chat-box"> 
+        <div className="chat-box">
           <div className="chat-header">
             <h3>Search History</h3> 
           </div>
 
           <div className="chat-body">
-            
             {history.length === 0 && !response ? (
               <div className="no-history">
                 <p className="no-questions">No Questions added</p>
@@ -57,7 +57,6 @@ const Chat = () => {
                   </div>
                 )}
 
-               
                 {history.map((entry, index) => (
                   <div
                     key={index}
@@ -93,7 +92,18 @@ const Chat = () => {
         </div>
       </div>
 
-      
+      {/* New Search Input Section */}
+      <div className="search-section">
+        <h3>Chat suggestion</h3>
+        <input
+          type="text"
+          className="search-input"
+          value={searchText}
+          onChange={handleSearchChange}
+          placeholder="Type your question..."
+        />
+      </div>
+
       <div className="user-info">
         <span className="user-name">Johnsson Doe</span> 
         <img src={loginIcon} alt="User Icon" className="user-icon" />

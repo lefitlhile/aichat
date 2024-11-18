@@ -13,6 +13,7 @@ import Chat from './pages/Chat';
 import Register from './pages/Register';
 
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -30,6 +31,8 @@ function App() {
       </Routes>
     </BrowserRouter>
   );
+  
 }
+
 
 export default App;

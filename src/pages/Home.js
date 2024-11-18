@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaPaperPlane } from 'react-icons/fa';
 import { GoArrowSwitch } from "react-icons/go";
@@ -6,19 +6,18 @@ import { TbCurrencyDollar } from "react-icons/tb";
 import { IoChatbubbleOutline } from "react-icons/io5";
 import { RiSettingsLine, RiGroupLine } from "react-icons/ri";
 import { CiShare2 } from "react-icons/ci";
-import logo from '../components/img/electric_bolt_42dp_EA33F7.png';
+import logo from '../components/img/Logo1.png';
 import chatboxImage from '../components/img/chat-box.png';
 import userIcon from '../components/img/user.png';
 import loginIcon from '../components/img/headman.webp';
 import './Home.css';
 import './Sidebar.css';
-import './Chat.js';
+import axios from 'axios';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const genAI = new GoogleGenerativeAI("AIzaSyAr38FDtRbgc18Qmvhm6jVCRlcNRmvAHQQ"); // Replace with your API key
+const genAI = new GoogleGenerativeAI("AIzaSyAr38FDtRbgc18Qmvhm6jVCRlcNRmvAHQQ"); 
 
 const cleanMarkdown = (text) => {
-  // Remove markdown syntax like '*' for bold or italic text
   return text.replace(/\*+/g, '').replace(/_+/g, '');
 };
 
@@ -28,6 +27,27 @@ function Home() {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const [username, setUsername] = useState(null); 
+
+ 
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
+
+ 
+  useEffect(() => {
+    axios.get('http://localhost:5000/chats')  
+      .then((response) => {
+        setHistory(response.data); 
+      })
+      .catch((error) => {
+        console.error("Error fetching chat data:", error);
+      });
+  }, []);
 
   const handleChange = (e) => {
     setQuestion(e.target.value);
@@ -40,14 +60,13 @@ function Home() {
       setLoading(true);
 
       try {
-        // Initialize the model
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-        // Make the API call
+        
         const result = await model.generateContent(question);
-        const aiResponse = result.response.text();
+        const aiResponse = result.response.text(); 
 
-        // Update history with AI response
+        
         setHistory((prevHistory) => [
           ...prevHistory,
           { type: 'ai', text: aiResponse },
@@ -55,18 +74,17 @@ function Home() {
       } catch (error) {
         console.error("Error occurred during API call:", error);
 
-        // Log additional details if available
         if (error.response) {
           console.error("API Response Error:", error.response.data);
         }
 
-        // Update the history with an error message
+        
         setHistory((prevHistory) => [
           ...prevHistory,
           { type: 'ai', text: 'An error occurred. Please try again later.' },
         ]);
       } finally {
-        setLoading(false); // Stop loading state
+        setLoading(false);
       }
     }
   };
@@ -77,7 +95,11 @@ function Home() {
 
   const handleSelectHistory = (index) => {
     setSelectedIndex(index);
-    navigate('/Chat'); // Navigate to the chat page on selecting history
+    const selectedEntry = history[index];
+
+    if (selectedEntry.type === 'ai') {
+      navigate('/Chat', { state: { response: selectedEntry.text } });
+    }
   };
 
   return (
@@ -148,8 +170,8 @@ function Home() {
             history.map((entry, index) => (
               <div
                 key={index}
-                className={`chat-entry ${entry.type} ${selectedIndex === index ? 'selected' : ''}`} 
-                onClick={() => handleSelectHistory(index)} 
+                className={`chat-entry ${entry.type} ${selectedIndex === index ? 'selected' : ''}`}
+                onClick={() => handleSelectHistory(index)}
               >
                 <div className="chat-avatar">
                   {entry.type === 'user' ? (
@@ -159,12 +181,12 @@ function Home() {
                   )}
                 </div>
                 <div className={entry.type === 'user' ? 'user-question' : 'ai-response'}>
-                {entry.type === 'ai' ? (
-                  <p>{cleanMarkdown(entry.text)}</p> // Cleaned response without markdown
-                ) : (
-                  entry.text
-                )}
-              </div>
+                  {entry.type === 'ai' ? (
+                    <p>{cleanMarkdown(entry.text)}</p>
+                  ) : (
+                    entry.text
+                  )}
+                </div>
               </div>
             ))
           )}
@@ -173,9 +195,17 @@ function Home() {
 
       {/* Login Icon */}
       <div className="login-icon-container">
-        <Link to="/Login">
-          <img src={loginIcon} alt="Login" className="login-icon" />
-        </Link>
+        {/* If username is available, display it next to the login icon */}
+        {username ? (
+          <div className="user-info">
+            <img src={userIcon} alt="User" className="user-icon" />
+            <span className="username">{username}</span>
+          </div>
+        ) : (
+          <Link to="/login">
+            <img src={loginIcon} alt="Login" className="login-icon" />
+          </Link>
+        )}
       </div>
     </div>
   );

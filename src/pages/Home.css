@@ -343,3 +343,19 @@ input[type="text"] {
   border-radius: 50%;
   object-fit: cover;
 }
+.icon-container {
+  display: flex;
+  align-items: center; /* Align icons vertically */
+}
+.send-icon{
+  cursor: pointer;
+  font-size: 20px;
+  color: #0f0f0f;
+  margin-left: 05x;
+}
+.microphone-icon {
+  cursor: pointer;
+  font-size: 24px;
+  color: #080808;
+  margin-left: 10px; /* Space between the send icon and microphone */
+}
