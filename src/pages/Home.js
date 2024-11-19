@@ -15,7 +15,8 @@ import './Sidebar.css';
 import axios from 'axios';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const genAI = new GoogleGenerativeAI("AIzaSyAr38FDtRbgc18Qmvhm6jVCRlcNRmvAHQQ"); 
+// Initialize Google Generative AI
+const genAI = new GoogleGenerativeAI("AIzaSyAr38FDtRbgc18Qmvhm6jVCRlcNRmvAHQQ");
 
 const cleanMarkdown = (text) => {
   return text.replace(/\*+/g, '').replace(/_+/g, '');
@@ -28,9 +29,9 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState(null); 
+  const [username, setUsername] = useState(null);
 
- 
+  // Fetch stored username
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
     if (storedUsername) {
@@ -38,11 +39,11 @@ function Home() {
     }
   }, []);
 
- 
+  // Fetch chat history from the backend
   useEffect(() => {
     axios.get('http://localhost:5000/chats')  
       .then((response) => {
-        setHistory(response.data); 
+        setHistory(response.data);  // Set chat history
       })
       .catch((error) => {
         console.error("Error fetching chat data:", error);
@@ -62,15 +63,22 @@ function Home() {
       try {
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-        
+        // Request the AI response
         const result = await model.generateContent(question);
-        const aiResponse = result.response.text(); 
+        const aiResponse = result.response.text();
 
-        
+        // Update state with AI response
         setHistory((prevHistory) => [
           ...prevHistory,
           { type: 'ai', text: aiResponse },
         ]);
+
+        // Save the chat to the backend
+        await axios.post('http://localhost:5000/chats', {
+          userMessage: question,
+          aiResponse: aiResponse
+        });
+
       } catch (error) {
         console.error("Error occurred during API call:", error);
 
@@ -78,7 +86,6 @@ function Home() {
           console.error("API Response Error:", error.response.data);
         }
 
-        
         setHistory((prevHistory) => [
           ...prevHistory,
           { type: 'ai', text: 'An error occurred. Please try again later.' },
@@ -90,7 +97,7 @@ function Home() {
   };
 
   const clearHistory = () => {
-    setHistory([]);
+    setHistory([]);  // Clear chat history
   };
 
   const handleSelectHistory = (index) => {
@@ -144,10 +151,11 @@ function Home() {
               <FaPaperPlane className="send-icon" />
             )}
           </span>
+          
         </div>
         <h3 className="left-align">Get answers in seconds</h3>
         <p className="left-align">Create and complete tasks using boards</p>
-
+        {/* Search History */}
         <div className="search-history-box">
           {history.length > 0 && (
             <button className="clear-button" onClick={clearHistory}>Clear Chats History</button>
@@ -195,9 +203,9 @@ function Home() {
 
       {/* Login Icon */}
       <div className="login-icon-container">
-        {/* If username is available, display it next to the login icon */}
         {username ? (
           <div className="user-info">
+            
             <img src={userIcon} alt="User" className="user-icon" />
             <span className="username">{username}</span>
           </div>

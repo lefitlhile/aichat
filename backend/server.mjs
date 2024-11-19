@@ -15,22 +15,41 @@ const db = mysql.createConnection({
   host: "localhost",
   user: 'root',
   password: 'Jesus@1989',
-  database:'chattable'
-})
+  database: 'chattable',
+});
 
-app.get('/', (re, res)=>{
+// Test route
+app.get('/', (req, res) => {
   return res.json("From Backend Side");
-})
+});
 
-app.get('/chats',( req, res)=> {
-const sql = "SELECT * FROM chats";
-db.query(sql,(err, data)=> {
+// Get all chats
+app.get('/chats', (req, res) => {
+  const sql = "SELECT * FROM chats ORDER BY created_at DESC";  // Fetch chats in reverse order
+  db.query(sql, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
+  });
+});
 
-})
-})
+// Save new chat (both user query and AI response)
+app.post('/chats', (req, res) => {
+  const { userMessage, aiResponse } = req.body;
 
-app.listen(5000,()=> {
-  console.log("Connected")
-})
+  if (!userMessage || !aiResponse) {
+    return res.status(400).json({ error: "User message and AI response are required" });
+  }
+
+  const sql = "INSERT INTO chats (user_message, ai_response) VALUES (?, ?)";
+  db.query(sql, [userMessage, aiResponse], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: "Failed to save chat", details: err });
+    }
+    return res.status(201).json({ message: "Chat saved successfully", chatId: result.insertId });
+  });
+});
+
+// Start server
+app.listen(5000, () => {
+  console.log("Server running on port 5000");
+});

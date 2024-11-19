@@ -21,7 +21,12 @@ h3, p { margin: 0.1x 0;
 text-align: left;
 
 }
-.left-align { text-align: left; }
+.left-align {
+  text-align: left; 
+  text-align: center;       
+            
+}
+
 
 .search-history-box {
   width: 60%; /* Adjust width as needed */

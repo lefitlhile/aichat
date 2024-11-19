@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ChatContent.css';
 import Sidebar from '../components/Sidebar'; 
 import { TiThumbsUp, TiThumbsDown } from 'react-icons/ti'; 
-import loginIcon from '../components/img/headman.webp';
+
 import { useLocation } from 'react-router-dom'; 
 
 const Chat = () => {
@@ -104,11 +104,8 @@ const Chat = () => {
         />
       </div>
 
-      <div className="user-info">
-        <span className="user-name">Johnsson Doe</span> 
-        <img src={loginIcon} alt="User Icon" className="user-icon" />
       </div>
-    </div>
+
   );
 };
 
